@@ -279,4 +279,4 @@ docker-compose -f docker-compose.prod.yml build
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details
+The project license is to be added.

@@ -138,15 +138,65 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
 
 ## Testing
 
-Run the test suite:
-```bash
-docker-compose exec web python manage.py test
+### Setting Up Testing Environment
+
+1. Create a `pytest.ini` file in the project root:
+```ini
+[pytest]
+DJANGO_SETTINGS_MODULE = ecommerce_api.settings
+python_files = tests.py test_*.py *_tests.py
+addopts = -v -s --disable-warnings
 ```
 
-For more detailed test output:
-```bash
-docker-compose exec web python manage.py test -v 2
+2. Add pytest dependencies to requirements.txt:
 ```
+pytest==7.4.4
+pytest-django==4.7.0
+pytest-cov==4.1.0
+```
+
+### Running Tests
+
+Using pytest:
+```bash
+
+# Run all tests
+docker-compose exec web pytest
+
+# Run tests with verbose output
+docker-compose exec web pytest -v
+
+# Run specific test file
+docker-compose exec web pytest products/tests/test_models.py
+
+# Run specific test class
+docker-compose exec web pytest products/tests/test_models.py::ProductModelTest
+
+# Run specific test method
+docker-compose exec web pytest products/tests/test_models.py::ProductModelTest::test_product_creation
+
+# Run tests with coverage report
+docker-compose exec web pytest --cov=products
+
+# Generate HTML coverage report
+docker-compose exec web pytest --cov=products --cov-report=html
+```
+
+### Test Categories
+
+Our test suite includes:
+
+1. Model Tests (`test_models.py`)
+   - Product model validation
+   - Order model validation
+   - OrderItem relationships
+   - Price and stock constraints
+
+2. View Tests (`test_views.py`)
+   - API endpoint functionality
+   - Authentication
+   - Permission checks
+   - Response formats
 
 ## Data Models
 

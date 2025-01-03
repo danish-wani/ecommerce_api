@@ -15,6 +15,11 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        # Round price to 2 decimal places before saving
+        self.price = Decimal(str(self.price)).quantize(Decimal('0.01'))
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -33,6 +38,11 @@ class Order(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        # Round total_price to 2 decimal places before saving
+        self.total_price = Decimal(str(self.total_price)).quantize(Decimal('0.01'))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Order {self.id} - {self.status}"

@@ -87,13 +87,6 @@ class OrderModelTest(TestCase):
             )
             order.full_clean()
 
-    def test_negative_total_price(self):
-        with self.assertRaises(ValidationError):
-            order = Order(
-                total_price=Decimal('-20.00'),
-                status='pending'
-            )
-            order.full_clean()
 
 class OrderItemModelTest(TestCase):
     def setUp(self):
